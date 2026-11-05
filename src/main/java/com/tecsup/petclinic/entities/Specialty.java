@@ -1,32 +1,39 @@
 package com.tecsup.petclinic.entities;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Set;
 
-/**
- * 
- * @author jgomezm
- *
- */
 @NoArgsConstructor
 @Entity(name = "specialties")
 @Data
 public class Specialty {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Column(name = "name")
+    private String name;
 
-	@Column(name = "name")
-	private String name;
+    private String office;
 
-	@ManyToMany(mappedBy = "specialties", fetch = FetchType.LAZY)
-	@ToString.Exclude
-	//@EqualsAndHashCode.Exclude
-	private Set<Vet> vets;
+    @Column(name = "h_open")
+    private Integer hOpen;
+
+    @Column(name = "h_close")
+    private Integer hClose;
+
+    @ManyToMany(mappedBy = "specialties")
+    @JsonIgnore
+    @ToString.Exclude
+    private Set<Vet> vets;
 }
