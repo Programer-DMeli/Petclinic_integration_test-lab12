@@ -7,6 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+<<<<<<< HEAD
+=======
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+>>>>>>> 4597f82d6d8c74e5ad37ac344792790b9562424c
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -15,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class SpecialtyControllerTest {
+<<<<<<< HEAD
 
     @Autowired
     private MockMvc mockMvc;
@@ -26,5 +32,31 @@ class SpecialtyControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("radiology"));
+=======
+    @Autowired private MockMvc mockMvc;
+
+    @Test
+    void testFindAllSpecialties() throws Exception {
+        mockMvc.perform(get("/specialties"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0].id", is(1)));
+    }
+
+    @Test
+    void testFindSpecialtyOK() throws Exception {
+        mockMvc.perform(get("/specialties/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("radiology")))
+                .andExpect(jsonPath("$.office", is("Farewell")));
+    }
+
+    @Test
+    void testFindSpecialtyKO() throws Exception {
+        mockMvc.perform(get("/specialties/666")).andExpect(status().isNotFound());
+>>>>>>> 4597f82d6d8c74e5ad37ac344792790b9562424c
     }
 }
